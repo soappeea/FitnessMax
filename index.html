@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Calculator</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Fitness & Diet Calculator</h2>
+        <label>Age:</label>
+        <input type="number" id="age">
+    
+        <label>Gender:</label>
+        <select id="gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+    
+        <label>Height (cm):</label>
+        <input type="number" id="height">
+    
+        <label>Weight (kg):</label>
+        <input type="number" id="weight">
+    
+        <label>Activity Level:</label>
+        <select id="activity">
+          <option value="1.2">Sedentary</option>
+          <option value="1.375">Lightly active</option>
+          <option value="1.55">Moderately active</option>
+          <option value="1.725">Very active</option>
+        </select>
+    
+        <label>Goal:</label>
+        <select id="goal">
+          <option value="lose">Lose Weight</option>
+          <option value="maintain">Maintain</option>
+          <option value="gain">Gain Muscle</option>
+        </select>
+    
+        <button onclick="calculateResults()">Calculate</button>
+    
+        <div class="results" id="results"></div>
+      </div>
+    
+      <script>
+        function calculateResults() {
+          const age = +document.getElementById('age').value;
+          const gender = document.getElementById('gender').value;
+          const height = +document.getElementById('height').value;
+          const weight = +document.getElementById('weight').value;
+          const activity = +document.getElementById('activity').value;
+          const goal = document.getElementById('goal').value;
+    
+          // BMI
+          const heightM = height / 100;
+          const bmi = weight / (heightM * heightM);
+    
+          // BMR
+          let bmr;
+          if (gender === 'male') {
+            bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+          } else {
+            bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+          }
+    
+          // TDEE
+          const tdee = bmr * activity;
+    
+          // Calorie adjustment
+          let calorieGoal;
+          if (goal === 'lose') {
+            calorieGoal = tdee - 500;
+          } else if (goal === 'gain') {
+            calorieGoal = tdee + 300;
+          } else {
+            calorieGoal = tdee;
+          }
+    
+          const resultText = `
+            <strong>BMI:</strong> ${bmi.toFixed(1)}<br>
+            <strong>BMR:</strong> ${bmr.toFixed(0)} kcal/day<br>
+            <strong>TDEE:</strong> ${tdee.toFixed(0)} kcal/day<br>
+            <strong>Recommended Calorie Intake:</strong> ${calorieGoal.toFixed(0)} kcal/day
+          `;
+    
+          document.getElementById('results').innerHTML = resultText;
+        }
+      </script>
+    
+    
+</body>
+</html>
